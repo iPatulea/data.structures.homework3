@@ -1,0 +1,13 @@
+Patulea Ionut
+313CA
+
+!NU AM FOLOSIT SCHELETUL DE COD!
+
+Main-ul este normal impart si trimit functiilor parametrii de care au nevoie. Functiile get si site impart singure cuvintele 
+iar put-ul le primeste direct taiate.
+
+Header-ul hash are la baza un hastable modificat. Hash-ul meu este practic un vector de liste in care fiecare element este o alta 
+lista de cuvinte(site-urile cuvintelor) marimea lui si cheia(cuvantul). Functia put este simpla gaseste ramura key de hash si adauga 
+site-ul la cheia cuvantului lui DIRECT ORDONATE ALFABETIC. Functia get retine site-urile primului cuvant intr-o lista si apoi intersectez 
+scotand din lista site-urile care nu apar in celelalte liste de site-uri. Functia site este simpla daca un cuvant nu are site-ul cautat 
+atunci nu este de gasit.

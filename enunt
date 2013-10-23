@@ -1,0 +1,119 @@
+ntroducere
+
+Fiind foarte dornic de a căuta și studia noutățile legate de domeniul IT, studentul eminent Gigel folosește motorul de căutare Google pentru a afla aceste informații. Într-o noapte a realizat ca el nu știe absolut nimic despre modul în care funcționează principala lui unealta de investigare – Google.
+
+Timp de câteva zile a căutat cum funcționează acest motor de căutare, dar știind ca întotdeauna teoria pare mult mai ușoară decât implementarea propriu-zisă și fiind pasionat de hashtable-uri a decis să implementeze o funcționalitate de bază a motoarelor de căutare, și anume partea de căutare a termenilor.
+
+Din păcate, Gigel s-a încurcat destul de tare la implementare și a hotărât ca să lase implementarea acestei funcționalități pe seama unor studenți mai eminenți decât el.
+
+Cerințe
+
+Dându-se ca input o serie de site-uri și conținutul acestora, se cere să se găsească site-urile care conțin cuvintele date ca interogare sau dacă un site conține o înlănțuire de termeni.
+
+Detalii de implementare
+
+Input
+
+Input-ul constă din 3 tipuri de comenzi pe care le veți citi de la tastatură, până cănd veți întălni caracterul EOF. Cele 3 comenzi sunt:
+
+„PUT”
+„GET”
+„SITE”
+În secțiunile următoare ale enunțului, se vor găsi explicații despre fiecare astfel de comandă.
+
+Comanda PUT
+
+Sintaxa comenzii PUT este:
+
+      PUT site conținut_site 
+Rolul acestei comenzi este a reține tot conținutul site-ulului primit ca parametru în comandă, astfel încât la orice căutari de termeni care se află în conținut, site-ul respectiv să fie găsit.
+
+În mica lui cercetare despre cum funcționează un motor de căutare, Gigel a regăsit două tehnici de reținere a acestei comenzi :
+
+Într-un hashtable, se rețin asocieri de tipul site - lista de cuvinte. Astfel cheia intrării în hashtable este site-ul și valoarea lista de cuvinte . Așa cum a descoperit și Gigel, există o seria de avantaje și dezavantaje:
+operația de PUT este mult ușurată, întrucât nu se fac deloc prelucrări asupra conținutului,
+operația de GET în cadrul acestei structuri este mult îngreunată, întrucât se caută cuvinte și nu site-uri.
+(Remember: proprietatea de bază a unui hashtable este că operația de căutare se efectuează în O(1) complexitate)
+„Inverted index”. Tot într-un hashtable, se rețin asocieri de tipul cuvânt - lista de site-uri. Astfel cheia intrării în hashtable este cuvântul și valoarea lista de site-uri care conțin acel cuvânt. În acest fel, căutarea unui cuvânt este efectuată mult mai ușor, întrucât hashtable-ul este indexat după cuvinte.
+În tema voastră, va trebui să implementați cea de-a doua tehnică de reținere a informațiilor, cea în care într-un hashtable se rețin asocieri de tipul cuvânt - listă de site-uri. Astfel dacă se dau la input următoarele două comenzi:
+
+PUT www.yahoo.com yahoo america
+PUT www.google.com google america
+Hashtable-ul după aceste două comenzi va arăta în felul următor:
+
+yahoo → www.yahoo.com
+google → www.google.com
+america → www.yahoo.com www.google.com
+Observații comandă PUT:
+
+Două comenzi PUT pentru același site se consideră adăugări de conținut și nu ștergere sau înlocuire de conținut.
+Un cuvânt poate apărea de mai multe ori în cadrul site-ului.
+Comanda GET
+
+Sintaxa comenzii GET este:
+
+    GET interogare
+Această comandă va întoarce toate site-urile în care apar toți termenii interogării. De exemplu, pentru următoarele interogări:
+
+GET america
+Rezultatul va fi www.google.com www.yahoo.com
+Cuvântul „america” apare atât în site-ul www.google.com cât și în www.yahoo.com
+Cele două situri afișate sunt în ordine alfabetică.
+GET america google
+Rezultatul va fi www.google.com
+GET romania
+Rezultatul va fi SITE_NOT_FOUND (Nu există nici un site indexat care să conțină cuvântul romania)
+Observații comandă GET:
+
+Ordinea site-urilor nu contează. Site-urile vor fi afișate în ordine alfabetică
+Dacă nu există nici un site care să conțină toți termenii interogării, atunci se va afișa „SITE NOT FOUND”. SITE_NOT_FOUND
+Intrucât va trebui să afisați toate site-urile care conțin toți termenii interogării, va trebui să găsiți o metodă de intersecție rapidă a site-urilor care conțin cel puțin un termen, întrucât Gigel nu a găsit răspuns la această întrebare.
+Comanda SITE
+
+Sintaxa comenzii SITE este:
+
+   SITE site interogare 
+   
+Această comandă verifică dacă toți termenii din „interogare” există în site-ul „site”. Dacă toți termenii există în site, atunci se va afișa „WORD FOUND”WORD_FOUND , dacă nu atunci se va afișa „WORD NOT FOUND”WORD_NOT_FOUND.
+
+Exemplu:
+
+SITE www.yahoo.com yahoo
+WORD_FOUND
+SITE www.google.com romania google
+WORD_NOT_FOUND
+Observații generale INPUT
+
+Despărțitorul între cuvintele din conținutul site-urilor sau din interogare este doar caracterul spațiu.
+Nu se vor găsi printre cuvinte alți desparțitori de cuvinte decât caracterul spațiu.
+Fiecare comandă se află pe o linie.
+Nu există un număr maxim de comenzi și nici nu există un număr maxim de caractere pe o linie.
+Se garantează ca în numele site-ului nu se vor gasi spații.
+Numele site-ului nu este obligatoriu sa înceapa cu www.
+Comanda se termina cu caracterul „\n”, care se garantează ca nu apare în conținutul site-urilor sau în interogări.
+Outputul comenzilor GET și SITE este influențat doar de comenzile PUT de până atunci. Așadar nu va trebui să rețineți comenzile date, ci doar să le procesați.
+Hashtable
+
+Pentru implementarea eventualelor structuri de date de tip hashtable din temă, puteți pleca de la implementarea din Laboratorul 6, bazată pe vectori de liste înlănțuite. Pentru a putea efectua tema, trebuie să țineți cont de următoarele observații:
+
+Operația de GET dintr-un hashtable trebuie să poată fii efectuată în timp constant și să nu fie influențată de numărul de intrări în hashtable. Din acest motiv, dacă implementați hashtable-ul ca un vector de liste, așa cum este sugerat în laboratorul de hash-uri, trebuie să tineți cont de raportul între câte intrări sunt în hashtable și capacitatea lui.
+Dacă acest raport, numit factor de încărcare, depășeste o valoare predefinită (se recomandă ca această valoare să fie 0.7), atunci va trebui să redimensionați vectorul și bineînțeles va trebui să introduceți vechile intrări în noul vector.
+Pentru vectorul inițial din hashtable, puteți pleca cu o capacitate predefinită de intrări, de exemplu 10, urmând ca la fiecare redimensionare să dublați capacitatea vectorului.
+Va trebui să găsiți o metodă prin care pentru un cuvânt să rețineți lista de site-uri asociate.
+Va trebui să gasiți o metodă prin care două liste de site-uri se intersectează foarte rapid.
+Întrucât se lucrează doar cu string-uri puteți folosi funcția de hash din laboratorul 6.
+Următorul exemplu vă va ajuta să înțelegeți cum se redimensionează un hashtable:
+
+Înainte:  După redimensionare: 
+
+Explicații:
+
+Cele două poze indică același hashtable, odată înainte de redimensionare, având capacitatea de 10 și apoi după redimensionare, având capacitatea de 20.
+În cele două poze sunt arătate doar pozițiile din vector care conțin o listă nevidă de elemente.
+În poze, numele țărilor indică cheia din hashtable, iar valorile (listele de site-uri care conțin aceste cuvinte) nu au fost afișate
+Între paranteze, pentru fiecare țară este arătat valoarea hash-ului calculat cu funcția din laborator (hash(“romania”)==1443285676)
+Poziția din vector în care s-a inserat o cheie este indicele hash(cuvânt)%capacitate
+În prima situație, în hashtable sunt deja 7 elemente (70% din capacitatea hashtable-ului este ocupată) și se inserează o nouă cheie (“romania”).
+În acest caz, întrucât factorul de încărcare depășeste 70%, trebuie ca hashtable-ul să fie redimensionat, iar cheile remapate la noii indecși.
+Astfel cheia “america” a fost mutată în elementul 15 din vector, întrucât hash(“america”)%20==15 samd.
+Cheia “romania” a fost inserată pe poziția 16.
